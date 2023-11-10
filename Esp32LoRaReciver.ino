@@ -21,10 +21,10 @@
 
  --------------------------#Repo-----------------------------------------
  My Repo: / Meu Repositório:
- $ https://github.com/arisonreis
+ $ https://github.com/voidex1
  
  Project repo: / Repositório do projeto:
- $ https://github.com/arisonreis/MicroControllers-Radio-Communication
+ $ https://github.com/voidex1/MicroControllers-Radio-Communication
  ----------------------------------------------------------------------
 
  Controller:
