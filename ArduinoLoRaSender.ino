@@ -1,3 +1,36 @@
+/*
+ -----------------------------------------------#Description-----------------------------------------------------------------------------------------------------------------------------------------------
+ This is an example of data transmission through radio communication using LoRa (Long Range) and displaying it on both the OLED display and a web application developed based on a server created on Esp32
+ Este é um exemplo de envio de dados em comunicação via rádio usando LoRa (Longa Distância) e mostrar tanto no display Oled quanto numa aplicação web desenvolvida com base num servidor criado no Esp32
+ 
+ Developed by Arison Reis
+ Desenvolvido por Arison Reis
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ ----------------------------#Sensors-----------------------------------
+ Sensors used in the project:
+ Sensores ultilizados no projeto:
+ PH:
+ en - PH Meter https://www.amazon.com.br/Module-PH0-14-Detect-Sensor-Electrode/dp/B095W2R3BS
+ pt - Medidor de PH  https://produto.mercadolivre.com.br/MLB-4016196352-valor-de-ph-do-modulo-de-sensor-de-aquisico-de-sonda-de-ele-_JM#is_advertising=true&position=3&search_layout=grid&type=pad&tracking_id=473dda6a-7cf7-46cc-af97-5281125c70a4&is_advertising=true&ad_domain=VQCATCORE_LST&ad_position=3&ad_click_id=MGFhOGEzMTQtNDg3Yi00ODZmLTgyNTAtZDI3ZjMzN2JhYWI
+ Temperature Meter: DS18B20 
+ Medidor de temperatura: DS18B20
+ ----------------------------------------------------------------------
+ --------------------------#Repo-----------------------------------------
+ My Repo: / Meu Repositório:
+ $ https://github.com/voidex1
+ 
+ Project repo: / Repositório do projeto:
+ $ https://github.com/voidex1/MicroControllers-Radio-Communication
+ ----------------------------------------------------------------------
+ Controller:
+ ------------------ 
+ Arduino -  Sender |
+ Arduino -  Sender |
+ ------------------
+*/
+
+//-----------------------------#Code ------------------------------------------------
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <OneWire.h>
@@ -12,7 +45,7 @@
 #define rows 2
 #define address 0x27
 #define BAND 433E6    //Define a frequência do LoRa. 433E6 é a mesma coisa de 433000000MHz. Você também pode usar 868E6 e 915E6.
-#define PABOOST true  //Sem conhecimento dessa variavel mas ela deve aparecer para funcionar
+#define PABOOST true  
 #define turbidity_pin  A3
 
 OneWire oneWire(ONE_WIRE_BUS);
@@ -30,7 +63,7 @@ const byte phpin = A0; // ph pin
 float voltage, temperature;
 LiquidCrystal_I2C lcd(address, colums, rows); // lcd instância
 
-///Code----------------------------------------------------------
+//Setup----------------------------------------------------------
 void setup() {
   pinMode(turbidity_pin, INPUT);
   pinMode(phpin, INPUT); 
@@ -64,6 +97,7 @@ void setup() {
   delay(1000);
 }
 
+//Loop----------------------------------------------------------
 void loop() {
   //turbidity
   int sensorValue = analogRead(turbidity_pin); 
