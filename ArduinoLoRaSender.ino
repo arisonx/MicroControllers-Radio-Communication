@@ -23,7 +23,7 @@
  Project repo: / Repositório do projeto:
  $ https://github.com/voidex1/MicroControllers-Radio-Communication
  ----------------------------------------------------------------------
- Controller:
+ Board:
  ------------------ 
  Arduino -  Sender |
  Arduino -  Sender |
@@ -37,9 +37,9 @@
 #include <DallasTemperature.h>
 #include <SPI.h>
 #include <LoRa.h>
-//Libs---------------------------------
+//Libs /  Bibliotecas
 
-//variables and defines----------------------------
+//Constants
 #define ONE_WIRE_BUS 6
 #define colums 16
 #define rows 2
@@ -57,10 +57,19 @@ double NTU = 0.0;
 float calibration_value = 21.34 + 1;
 unsigned long int avgValue;  //Store the average value of the sensor feedback
 int buf[10], temp;
- 
+
+ // Create a structure to store sensor data  // Cria uma estrutura para armazenar dados do sensor
+struct SensorsData {
+    float ph;
+    float turbidez;
+    float temperature;
+} sensorsData;
+
 
 const byte phpin = A0; // ph pin
+
 float voltage, temperature;
+
 LiquidCrystal_I2C lcd(address, colums, rows); // lcd instância
 
 //Setup----------------------------------------------------------
@@ -99,6 +108,7 @@ void setup() {
 
 //Loop----------------------------------------------------------
 void loop() {
+
   //turbidity
   int sensorValue = analogRead(turbidity_pin); 
   float voltage = sensorValue * (5.0 / 1024.0);  
@@ -122,25 +132,26 @@ void loop() {
   avgValue=0;
 
   for(int i=2;i<8;i++)avgValue+=buf[i];  //take the average value of 6 center sample
-     
+
+  //ph   
   float phValue=(float)avgValue*5.0/1024/6; //convert the analog into millivolt
   phValue = -5.70 * phValue + calibration_value; //convert the millivolt into pH value
+  delay(700);
+  
   // temperature
   sensors.requestTemperatures();
   float temp = sensors.getTempCByIndex(0);
   delay(700);
 
+  // display
   lcd.setCursor(0,0);
   lcd.print("TMP:");
   lcd.print(temp,2);
   lcd.println("       ");
 
-
-
   lcd.setCursor(0,1);
   lcd.print("PH:");
   lcd.print(phValue, 2);
-
 
   lcd.setCursor(9,1);
   lcd.print("TU:");
@@ -149,23 +160,24 @@ void loop() {
   delay(700);
 
   loraSender(sensors.getTempCByIndex(0), phValue,NTU); // envia os dados pelo lora
-
 }
 
-void loraSender (float temp, float ph, float turbidez){
-  struct SensorsData {
-    float ph;
-    float turbidez;
-    float temperature;
-  } sensorsData;
 
-  sensorsData.temperature = temp;
-  sensorsData.ph =  ph;
-  sensorsData.turbidez = turbidez;
-  LoRa.beginPacket();
-  LoRa.write((uint8_t*)&sensorsData, sizeof(sensorsData));
-  LoRa.endPacket();
-  delay(100);
+// LoRa Sender Function
+void loraSender (float temp, float ph, float turbidez){
+  // Fill the structure with sensor data
+   SensorsData sensorsData = {temp, ph, turbidity};
+  
+  // Start LoRa transmission
+  if (LoRa.beginPacket()) {
+    // Write the data to the LoRa packet
+    LoRa.write((uint8_t*)&sensorsData, sizeof(sensorsData));
+    // End the LoRa packet
+    LoRa.endPacket();
+  } else {
+    //Error handling if transmission fails /  Manipulação de erro se a transmissão falhar
+    Serial.println("Erro ao enviar dados pelo LoRa");
+  }
 }
 
 double calc_NTU(double volt)
