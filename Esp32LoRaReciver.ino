@@ -27,7 +27,7 @@
  $ https://github.com/voidex1/MicroControllers-Radio-Communication
  ----------------------------------------------------------------------
 
- Controller:
+ Board:
  ------------------ 
  Esp32 -  RECIVER  |
  Esp32 -  RECEPTOR |
@@ -44,6 +44,8 @@
 #include <WiFiAP.h>     // Wifi AP
 // Libs / Bibliotecas
 
+
+//Constants
 // LoRa Pin Set / Setando Pinos Do Lora
 #define SCK 5    // GPIO5  -- SX127x's SCK
 #define MISO 19  // GPIO19 -- SX127x's MISO
@@ -51,16 +53,12 @@
 #define SS 18    // GPIO18 -- SX127x's CS
 #define RST 14   // GPIO14 -- SX127x's RESET
 #define DI00 26  // GPIO26 -- SX127x's IRQ(Interrupt Request)
-
 //Define a Lora Frequency. 433E6 is 433000000MHz. others frequecies 868E6 and 915E6.
 //Define uma frequência para o LoRa. 433E6 é 433000000MHz. Outras frequências 868E6 e 868E6.
 #define BAND 433E6   
-
-
 #define PABOOST true  //PADBOOST
 
-// Networks Credentials
-// Credenciais da rede a ser criada.
+// Networks Credentials / Credenciais da rede a ser criada.
 const char *ssid = "Projeto de pesquisa";
 const char *password = "12345678";
 
@@ -71,12 +69,10 @@ String IP;
 //Define o endereço do i2c do Oled(0x3c) e os pinos SDA(4) e SCL(15) do ESP32
 SSD1306 display(0x3c, 4, 15);  
 
-// Wifi Server Port
-// Porta do servidor wifi
+// Wifi Server Port / Porta do servidor wifi
 WiFiServer server(80);
 
-// Sensors Data Struct
-// Struct dos dados dos sensores
+// Sensors Data Struct / Estrutura dos dados dos sensores
 struct SensorsData {
   float ph;
   float turbidez;
@@ -243,5 +239,6 @@ void loop() {
     display.drawString(0, 20, "IP Address:");
     display.drawString(0, 30, IP);
     display.display();
+    delay(200);
   }
 }
