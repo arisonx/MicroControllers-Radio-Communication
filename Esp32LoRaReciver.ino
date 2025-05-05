@@ -3,8 +3,6 @@
  This is an example of data transmission through radio communication using LoRa (Long Range) and displaying it on both the OLED display and a web application developed based on a server created on Esp32
  Este é um exemplo de envio de dados em comunicação via rádio usando LoRa (Longa Distância) e mostrar tanto no display Oled quanto numa aplicação web desenvolvida com base num servidor criado no Esp32
  
- Developed by Arison Reis
- Desenvolvido por Arison Reis
  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
  ----------------------------#Sensors-----------------------------------
